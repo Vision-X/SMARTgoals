@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>2DoBox</title>
+    <title>SMARTgoalBOX</title>
     <link rel="stylesheet" type="text/css" href="styles.css" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:700" rel="stylesheet" />
@@ -13,11 +13,17 @@
   <body>
       <section class="top-container">
         <article class="todo-stage">
-          <h1><span class="todo-text">2Do</span><span class="box-text">Box</span></h1>
+          <h1><span class="todo-text">SMART</span><span class="box-text">goals</span></h1>
+          <ul class="smart-goal-tips">
+            <li>S - specific, significant, stretching</li>
+            <li>M - measurable, meaningful, motivational</li>
+            <li>A - attainable, achievable, acceptable, action</li>
+            <li>R - realistic, relevant, reasonable, rewarding, results</li>
+            <li>T - time-based, time-bound, timely, tangible, trackable</ul>
           <form>
-            <input id="todo-title" class="user-inputs" type="text" name="title" placeholder="Title" />
-            <input id="todo-task" class="user-inputs" type="text" name="body" placeholder="Task" />
-            <button id="save-btn" class="user-inputs" type="submit" disabled />save</button>
+            <input id="todo-title" class="user-inputs" type="date" name="title" value="12-31-2017" />
+            <input id="todo-task" class="user-inputs" type="text" name="body" placeholder="Goal" />
+            <button id="save-btn" class="user-inputs" type="submit" disabled />CreateGoal</button>
           </form>
         </article>
       </section>
