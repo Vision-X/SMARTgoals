@@ -15,6 +15,10 @@ body {
   margin: auto;
   max-width: 100%;
   background-color: #E5F3F2;
+  background-image: url('icons/mountains-whitney.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   height: 50vh;
   /*position: sticky;*/
   top: 0;
@@ -22,6 +26,7 @@ body {
 }
 
 h1 {
+  text-shadow: 2px 2px black;
   font-family: "Roboto Slab", serif;
   font-size: 2.5em;
   margin-bottom: 20px;
@@ -40,11 +45,11 @@ h1 {
 }
 
 .todo-text {
-  color: #00A79D;
+  color: #FFC229;
 }
 
 .box-text {
-  color: #6D6E71;
+  color: #0E3275;
 }
 
 form {
@@ -52,8 +57,8 @@ form {
 }
 
 .user-inputs {
-  border: solid 2px #D1D3D4;
-  color: #6D6E71;
+  border: solid 1px black;
+  color: #09204A;
   font-family: "Open Sans";
   font-size: 18px;
   font-weight: bold;
@@ -64,7 +69,7 @@ form {
 }
 
 ::-webkit-input-placeholder {
-  color: #D1D3D4;
+  color: #1447A6;
   font-family: "Open Sans";
   font-size: 18px;
   font-weight: bold;
@@ -92,25 +97,47 @@ form {
 }
 
 #save-btn {
-  background-color: #00A79D;
+  background-color: #0E3275;
   border-style: none;
   color: #FFFFFF;
   font-size: 16px;
   margin-bottom: 5px;
 }
 
+.smart-goal-tips {
+  color: white;
+}
+
+ul {
+  text-align: left;
+  font-size: 14px;
+  padding-left: 25%;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px black;
+}
+
+li {
+  text-align: left;
+}
+
 .importance-btn {
-  background-color: #00A79D;
+  background-color: #0E3275;
   border-style: none;
   color: #FFFFFF;
   font-size: 10px;
   height: 20px;
   margin-left: 1%;
-  width: 14%;
+  width: 15%;
+}
+
+#show-completed-todo,
+#show-more-todo {
+  width: 40% ;
+  text-align: center;
 }
 
 .completed-task-btn {
-  background-color: #00A79D;
+  background-color: #0E3275;
   border-style: none;
   color: #FFFFFF;
   font-size: 12px;
@@ -127,7 +154,7 @@ form {
 #save-btn:hover,
 .completed-task-btn:hover,
 .importance-btn:hover {
-  background-color: #045E55;
+  background-color: #09204A;
 }
 
 #save-btn:disabled {
@@ -148,13 +175,17 @@ form {
 
 .bottom-container {
   margin: 0;
-  /*margin-top: 115px;*/
   width: 100%;
 }
 
 .to-do-card {
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
   border-bottom: 1px #D1D3D4 solid;
   width: 100%;
+  height: 35vh;
+  /*background-color: #FFECBD;*/
 }
 
 .card-title-flex,
@@ -163,6 +194,7 @@ form {
   display: flex;
   flex-direction: row;
   margin: 10px 0;
+  /*justify-content: flex-end;*/
 }
 
 .card-title-flex {
@@ -182,24 +214,26 @@ form {
 
 h2,
 h3 {
-  color: #6D6E71;
+  /*color: #09204A;*/
   font-family: "Roboto Slab";
 }
 
 h2 {
+  color: #09204A;
   font-size: 22px;
   font-weight: bold;
+  margin-left: 5px;
   width: 95%;
 }
 
 h3 {
+  color: gray;
   font-size: 16px;
-  margin-left: 5px;
 }
 
 p {
-  color: #939598;
-  margin-left: : 5px;
+  color: #09204A;
+  margin-left: 5px;
 }
 
 .card-buttons {

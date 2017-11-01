@@ -2,22 +2,14 @@ $(document).ready(function() {
   prependAll(getToDoFromStorage());
 });
 
-// $(document).ready(function() {
-//     $('#date').keypress(function(key) {
-//         if (key.charCode < 45 || key.charCode > 57)
-//           return false;
-//     })
-//   };
 
 // ------------------- EVENT LISTENERS ---------------------
 $('.todo-card-section').on('click', '#delete', deleteCard);
 $(".todo-card-section").on('click', '.upvote-btn', upImportance);
 $(".todo-card-section").on('click', '.downvote-btn', downImportance);
 $('.todo-card-section').on('click', '.completed-task-btn', addClassOfCompletedTask);
-$('.todo-card-section').on('keyup', '#date', dateEditCheck);
-$('.todo-card-section').on('keyup', '#date', editTitle);
-$('.todo-card-section').on('keyup', '#goal', editBody);
-$('.todo-card-section').on('keyup', '#notes', editNotes);
+$('.todo-card-section').on('keyup', 'h2', editTitle);
+$('.todo-card-section').on('keyup', 'p', editBody);
 $("#todo-task, #todo-title").on('keyup', enableSave);
 $('#search-bar').on('keyup', searchCards);
 $("#save-btn").on('click', disableSave);
@@ -31,13 +23,12 @@ $('#show-completed-todo').on('click', showAllToDos);
 // ------------FUNCTIONS------------
 
 // ----------CONSTRUCTOR FUNCTION------------
-function NewToDo(title, body, id, notes) {
+function NewToDo(title, body, id) {
   this.title = title;
   this.body = body;
   this.id = id || Date.now();
   this.importance = 'normal';
   this.classy = false;
-  this.notes = notes || '';
 };
 
 function addClassOfCompletedTask() {
@@ -61,50 +52,24 @@ function prepareTheCardInfo(card) {
 }
 
 
-// function injectableCode(ToDo) {
-//   return `<div class="${ToDo.classy} to-do-card" id="${ToDo.id}">
-//             <div class="card-title-flex">
-//               <h2 contenteditable=true>${ToDo.title}</h2>
-//               <div class="delete-btn" id="delete"></div>
-//             </div>
-//               <p contenteditable=true>${ToDo.body}</p>
-//               <div class="card-quality-flex quality-spacing">
-//               <div class="upvote-btn" id="upvote"></div>
-//               <div class="downvote-btn" id="downvote"></div>
-//               <h3>importance:
-//               <span class="ToDo-quality">${ToDo.importance}</span></h3>
-//               <button type="button" class="completed-task-btn">
-//                 completed task</button>
-//               <hr>
-//             </div>
-//           </div>`;
-// }
-
-
 function injectableCode(ToDo) {
-  console.log("injectableCode " , ToDo);
   return `<div class="${ToDo.classy} to-do-card" id="${ToDo.id}">
             <div class="card-title-flex">
-              <h3>Date: </h3>
+              <h2 contenteditable=true>${ToDo.title}</h2>
               <div class="delete-btn" id="delete"></div>
             </div>
-              <h2 id="date" contenteditable=true>${ToDo.title}</h2>
-              <h3>Goal: </h3>
-              <h2 id="goal" contenteditable=true>${ToDo.body}</h2>
-              <h3>Notes: </h3>
-                <p id="notes" contenteditable=true placeholder="Enter notes/reflections here">${ToDo.notes}</p>
+              <p contenteditable=true>${ToDo.body}</p>
               <div class="card-quality-flex quality-spacing">
               <div class="upvote-btn" id="upvote"></div>
               <div class="downvote-btn" id="downvote"></div>
               <h3>importance:
               <span class="ToDo-quality">${ToDo.importance}</span></h3>
               <button type="button" class="completed-task-btn">
-                  completed goal</button>
+                completed task</button>
               <hr>
             </div>
           </div>`;
 }
-
 
 
 function prependCard(ToDo) {
@@ -180,17 +145,15 @@ function enterKeyBlur(e) {
 
 function editTitle(event) {
   var id = $(this).closest('.to-do-card')[0].id;
-  var title = $(this).text();
-  var isDate = $(this).text();
-  if (isDate) {
-    enterKeyBlur(event);
-    toDoArray.forEach(function(card) {
-      if (card.id == id) {
-        card.title = title;
-    }
-  });
+  var title = $(this).text(); {
+  enterKeyBlur(event);
+  toDoArray.forEach(function(card) {
+    if (card.id == id) {
+      card.title = title;
+   }
+ });
   sendToDosToStorage();
-}
+ }
 };
 
 
@@ -206,38 +169,15 @@ function editBody(event) {
   sendToDosToStorage();
 };
 
-function editNotes(event) {
-  var id = $(this).closest('.to-do-card')[0].id;
-  var notes = $(this).text();
-  enterKeyBlur(event);
-  toDoArray.forEach(function(card) {
-    if (card.id == id) {
-      card.notes = notes;
-    }
-  });
-  sendToDosToStorage();
-};
-
-function dateEditCheck(key) {
-  // console.log(key);
-  $("#date").on("keypress", function(key) {
-    if (key.charCode < 45 || key.charCode > 57)
-      return false;
-})
-}
-
 
 function sendToDosToStorage() {
   localStorage.setItem("toDoArray", JSON.stringify(toDoArray));
-  console.log(toDoArray, "todoarray-setter");
 };
 
 
-//clean this up to reflect a non-global array object !!! //
-
 function getToDoFromStorage() {
   toDoArray = JSON.parse(localStorage.getItem("toDoArray")) || [];
-  console.log(toDoArray, "todoarray-getter");
+  console.log(toDoArray);
     return toDoArray;
 };
 
@@ -250,11 +190,12 @@ function filterOutClassy() {
 }
 
 
-function showAllToDos() {
-  $('todo-card-section').empty();
-  var fullArray = toDoArray;
-  prependAll(fullArray);
-}
+// function showAllToDos() {
+//   $('todo-card-section').empty();
+//   var fullArray = toDoArray;
+//   prependAll();
+//   })
+// }
 
 
 function prependAll(ideaArray) {
@@ -301,7 +242,7 @@ function resetInputs() {
 function searchCards() {
   var search = $(this).val().toUpperCase();
   var results = toDoArray.filter(function(elementCard) {
-                return elementCard.title.toString().toUpperCase().includes(search) ||
+                return elementCard.title.toUpperCase().includes(search) ||
                 elementCard.body.toUpperCase().includes(search)
                 });
   $('.todo-card-section').empty();
@@ -333,7 +274,8 @@ function filterInOrOut(returnedFilterArray) {
 function clearAndReplaceWithAll(e) {
   e.preventDefault();
   $('.todo-card-section').empty();
-  prependAll();
+  console.log(toDoArray);
+  appendLastTenCards(toDoArray);
 
 }
 
