@@ -25,7 +25,7 @@ $(document).on('click', '.delete-btn', deleteCard);
 $(document).on('keyup', enterKeyBlur);
 $('.bottom-container').on('click', '#none, #low, #normal, #high, #critical', filter);
 $('#clear-filters').on('click', clearAndReplaceWithAll);
-$('#show-completed-todo').on('click', showAllToDos);
+$('#show-completed-todo').on('click', showCompleted);
 
 
 // ------------FUNCTIONS------------
@@ -237,7 +237,6 @@ function sendToDosToStorage() {
 
 function getToDoFromStorage() {
   toDoArray = JSON.parse(localStorage.getItem("toDoArray")) || [];
-  console.log(toDoArray, "todoarray-getter");
     return toDoArray;
 };
 
@@ -260,6 +259,14 @@ function showAllToDos() {
 function prependAll(ideaArray) {
   var lengthOfTenArray = filterOutClassy();
   lengthOfTenArray.slice(-10).forEach(function(el){
+    appendLastTenCards(el);
+  });
+}
+
+function showCompleted(ideaArray) {
+  $('todo-card-section').empty();
+  var completedArray = toDoArray;
+  completedArray.forEach(function(el){
     appendLastTenCards(el);
   });
 }
