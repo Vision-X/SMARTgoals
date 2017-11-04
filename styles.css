@@ -34,17 +34,20 @@ h1 {
   text-align: center;
 }
 
-.todo-stage {
+.top-container .smartgoal-stage,
+#search-and-btns {
   margin: auto;
-  /*padding-top: 5%;*/
   width: 50%;
 }
 
-.todo-card-section {
+.smartgoal-card-section {
   margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-.todo-text {
+.smartgoal-text {
   color: #FFC229;
 }
 
@@ -75,12 +78,8 @@ form {
   font-weight: bold;
 }
 
-#todo-task {
-  margin-bottom:
-}
-
-#todo-title,
-#todo-task {
+#smartgoal-title,
+#smartgoal-task {
   padding-left: 5px;
 }
 
@@ -92,7 +91,7 @@ form {
 }
 
 .filter-btn-container p {
-  color: white;
+  color: #FFC229;
   text-align: center;
 }
 
@@ -130,8 +129,8 @@ li {
   width: 15%;
 }
 
-#show-completed-todo,
-#show-more-todo {
+#show-completed-smartgoal,
+#show-more-smartgoal {
   width: 40% ;
   text-align: center;
 }
@@ -142,8 +141,10 @@ li {
   color: #FFFFFF;
   font-size: 12px;
   height: 40px;
-  margin-left: 50%;
-  width: 15%;
+  margin-left: 46%;
+  /*width: 15%;*/
+  justify-self: flex-end;
+  width: 5rem;
 }
 
 .completed-task, .true {
@@ -161,8 +162,8 @@ li {
   background-color: #D1D3D4;
 }
 
-#todo-title,
-#todo-task,
+#smartgoal-title,
+#smartgoal-task,
 #save-btn,
 .completed-task-btn,
 #search-bar:focus {
@@ -178,14 +179,32 @@ li {
   width: 100%;
 }
 
-.to-do-card {
+.smart-goal-card {
   justify-content: space-between;
   display: flex;
   flex-direction: column;
-  border-bottom: 1px #D1D3D4 solid;
-  width: 100%;
-  height: 35vh;
-  /*background-color: #FFECBD;*/
+  border: 2px solid gray;
+  border-radius: 8px;
+  width: 48vw;
+  /*height: 35vh;*/
+  padding: 1rem;
+  margin-bottom: .2rem;
+  margin-left: .2rem;
+  margin-right: .2rem;
+}
+
+.smart-goal-card h2 {
+  /*text-overflow: ellipsis;
+  overflow: hidden;*/
+  /*white-space: nowrap;*/
+  /*line-height: 35px;*/
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  line-height: 2rem;        /* fallback */
+  max-height: X*N;       /* fallback */
 }
 
 .card-title-flex,
@@ -201,7 +220,6 @@ li {
   align-items: baseline;
   justify-content: space-between;
   margin-top: 18px;
-
 }
 
 .card-quality-flex {
@@ -213,7 +231,8 @@ li {
 }
 
 h2,
-h3 {
+h3,
+h4 {
   /*color: #09204A;*/
   font-family: "Roboto Slab";
 }
@@ -221,7 +240,6 @@ h3 {
 h2 {
   color: #09204A;
   font-size: 22px;
-  font-weight: bold;
   margin-left: 5px;
   width: 95%;
 }
@@ -241,17 +259,6 @@ p {
   width: 25px;
 }
 
-.delete-btn {
-  background-image: url(icons/delete.svg);
-  display: inline-block;
-  float: right;
-  z-index: 20;
-  position: relative;
-  top: 0px;
-  height: 1.5em;
-  width: 1.5em;
-}
-
 #delete:hover {
   background-image: url(icons/delete-hover.svg);
 }
@@ -260,8 +267,8 @@ p {
   background-image: url(icons/upvote.svg);
   background-repeat: no-repeat;
   display: inline-block;
-  height: 1.5em;
-  width: 1.5em;
+  min-height: 1em;
+  min-width: 1em;
 }
 
 #upvote:hover {
@@ -272,9 +279,9 @@ p {
   background-image: url(icons/downvote.svg);
   background-repeat: no-repeat;
   display: inline-block;
-  height: 1.5em;
+  min-height: 1.5rem;
   margin-left: .5em;
-  width: 1.5em;
+  min-width: 1.5rem;
 }
 
 #downvote:hover {
@@ -304,26 +311,31 @@ p {
 
 
 @media (max-width: 900px) {
-  .todo-stage {
-    width: 80%;
+  .smartgoal-stage {
+    width: 100%;
   }
 
   .importance-btn {
-    width: 14%;
+    /*width: 14%;*/
   }
 }
 
 @media (max-width: 750px) {
-  .todo-stage {
-    width: 90%;
+  .smartgoal-stage {
+    width: 100%;
   }
+
+  .smart-goal-card {
+    width: 98vw;
+  }
+
   .filter-btn-container {
     background-color: gray;
     height: 95px;
     padding: 5px;
   }
   .importance-btn {
-    width: 12%;
+    /*width: 5rem;*/
   }
 }
 
@@ -349,12 +361,12 @@ p {
     height: 380px;
   }
 
-  #todo-title,
+  #smartgoal-title,
   #search-bar {
     height: 50px;
   }
 
-  #todo-task {
+  #smartgoal-task {
     height: 120px;
     padding-bottom: 75px;
   }
@@ -364,7 +376,7 @@ p {
     height: 60px;
   }
 
-  ::-webkit-#todo-task-placeholder {
+  ::-webkit-#smartgoal-task-placeholder {
     padding-bottom: 75px;
   }
 
@@ -396,7 +408,7 @@ p {
   }
 
   .importance-btn {
-    font-size: 10px;
-    width: 24%;
+    /*font-size: 10px;*/
+    /*width: 24%;*/
   }
 }
