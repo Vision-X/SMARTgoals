@@ -1,37 +1,32 @@
 $(document).ready(function() {
-  prependAll(getToDoFromStorage());
+  prependAll(getGoalFromStorage());
 });
 
-// $(document).ready(function() {
-//     $('#date').keypress(function(key) {
-//         if (key.charCode < 45 || key.charCode > 57)
-//           return false;
-//     })
-//   };
+
 
 // ------------------- EVENT LISTENERS ---------------------
-$('.todo-card-section').on('click', '#delete', deleteCard);
-$(".todo-card-section").on('click', '.upvote-btn', upImportance);
-$(".todo-card-section").on('click', '.downvote-btn', downImportance);
-$('.todo-card-section').on('click', '.completed-task-btn', addClassOfCompletedTask);
-$('.todo-card-section').on('keyup', '#date', dateEditCheck);
-$('.todo-card-section').on('keyup', '#date', editTitle);
-$('.todo-card-section').on('keyup', '#goal', editBody);
-$('.todo-card-section').on('keyup', '#notes', editNotes);
-$("#todo-task, #todo-title").on('keyup', enableSave);
+$('.smartgoal-card-section').on('click', '#delete', deleteCard);
+$(".smartgoal-card-section").on('click', '.upvote-btn', upImportance);
+$(".smartgoal-card-section").on('click', '.downvote-btn', downImportance);
+$('.smartgoal-card-section').on('click', '.completed-task-btn', addClassOfCompletedTask);
+$('.smartgoal-card-section').on('keyup', '#date', dateEditCheck);
+$('.smartgoal-card-section').on('keyup', '#date', editTitle);
+$('.smartgoal-card-section').on('keyup', '#goal', editBody);
+$('.smartgoal-card-section').on('keyup', '#notes', editNotes);
+$("#smartgoal-task, #smartgoal-title").on('keyup', enableSave);
 $('#search-bar').on('keyup', searchCards);
 $("#save-btn").on('click', disableSave);
 $(document).on('click', '.delete-btn', deleteCard);
 $(document).on('keyup', enterKeyBlur);
 $('.bottom-container').on('click', '#none, #low, #normal, #high, #critical', filter);
 $('#clear-filters').on('click', clearAndReplaceWithAll);
-$('#show-completed-todo').on('click', showCompleted);
+$('#show-completed-smartgoal').on('click', showCompleted);
 
 
 // ------------FUNCTIONS------------
 
 // ----------CONSTRUCTOR FUNCTION------------
-function NewToDo(title, body, id, notes) {
+function NewSmartGoal(title, body, id, notes) {
   this.title = title;
   this.body = body;
   this.id = id || Date.now();
@@ -41,63 +36,67 @@ function NewToDo(title, body, id, notes) {
 };
 
 function addClassOfCompletedTask() {
-  var currentCard = $(this).parents('.to-do-card');
-  var id = $(this).parents('.to-do-card')[0].id;
+  var currentCard = $(this).parents('.smart-goal-card');
+  var id = $(this).parents('.smart-goal-card')[0].id;
   currentCard.toggleClass('completed-task');
-  toDoArray.forEach(function(card) {
+  goalArray.forEach(function(card) {
     if (card.id == id) {
       card.classy = !card.classy;
    }
   });
-  sendToDosToStorage();
+  sendGoalsToStorage();
 }
 
 function prepareTheCardInfo(card) {
   var initialClass;
   if (card.classy) {
-    initialClass = 'to-do-card completed-task';
+    initialClass = 'smart-goal-card completed-task';
   }
   prependCard(card, initialClass);
 }
 
 
-// function injectableCode(ToDo) {
-//   return `<div class="${ToDo.classy} to-do-card" id="${ToDo.id}">
+// function injectableCode(Goal) {
+//   return `<div class="${Goal.classy} smart-goal-card" id="${Goal.id}">
 //             <div class="card-title-flex">
-//               <h2 contenteditable=true>${ToDo.title}</h2>
+//               <h3>Date: </h3>
 //               <div class="delete-btn" id="delete"></div>
 //             </div>
-//               <p contenteditable=true>${ToDo.body}</p>
+//               <h4 id="date" contenteditable=true>${Goal.title}</h4>
+//               <h3>Goal: </h3>
+//               <h2 id="goal" contenteditable=true>${Goal.body}</h2>
+//               <h3>Notes: </h3>
+//                 <p id="notes" contenteditable=true placeholder="Enter notes/reflections here">${Goal.notes}</p>
 //               <div class="card-quality-flex quality-spacing">
 //               <div class="upvote-btn" id="upvote"></div>
 //               <div class="downvote-btn" id="downvote"></div>
 //               <h3>importance:
-//               <span class="ToDo-quality">${ToDo.importance}</span></h3>
+//               <span class="Goal-quality">${Goal.importance}</span></h3>
 //               <button type="button" class="completed-task-btn">
-//                 completed task</button>
+//                   completed goal</button>
 //               <hr>
 //             </div>
 //           </div>`;
 // }
 
-
-function injectableCode(ToDo) {
-  console.log("injectableCode " , ToDo);
-  return `<div class="${ToDo.classy} to-do-card" id="${ToDo.id}">
+function injectableCode(Goal) {
+  return `<div class="${Goal.classy} smart-goal-card" id="${Goal.id}">
             <div class="card-title-flex">
               <h3>Date: </h3>
               <div class="delete-btn" id="delete"></div>
             </div>
-              <h2 id="date" contenteditable=true>${ToDo.title}</h2>
+              <h4 id="date" contenteditable=true>${Goal.title}</h4>
               <h3>Goal: </h3>
-              <h2 id="goal" contenteditable=true>${ToDo.body}</h2>
+              <h2 id="goal" contenteditable=true>${Goal.body}</h2>
               <h3>Notes: </h3>
-                <p id="notes" contenteditable=true placeholder="Enter notes/reflections here">${ToDo.notes}</p>
+                <p id="notes" contenteditable=true placeholder="Enter notes/reflections here">${Goal.notes}</p>
               <div class="card-quality-flex quality-spacing">
-              <div class="upvote-btn" id="upvote"></div>
-              <div class="downvote-btn" id="downvote"></div>
+                <div class="up-down-container">
+                  <div class="upvote-btn" id="upvote"></div>
+                  <div class="downvote-btn" id="downvote"></div>
+                </div>
               <h3>importance:
-              <span class="ToDo-quality">${ToDo.importance}</span></h3>
+              <span class="Goal-quality">${Goal.importance}</span></h3>
               <button type="button" class="completed-task-btn">
                   completed goal</button>
               <hr>
@@ -105,69 +104,68 @@ function injectableCode(ToDo) {
           </div>`;
 }
 
-
-
-function prependCard(ToDo) {
-  var injected = injectableCode(ToDo);
-  $(".todo-card-section").prepend(injected);
+function prependCard(Goal) {
+  var injected = injectableCode(Goal);
+  $(".smartgoal-card-section").prepend(injected);
 }
 
 
-function appendLastTenCards(ToDo) {
-  var injected = injectableCode(ToDo);
-  $(".todo-card-section").prepend(injected);
+function appendLastTenCards(Goal) {
+  var injected = injectableCode(Goal);
+  $(".smartgoal-card-section").prepend(injected);
 }
 
 
 function addCard() {
-  var todoTitle = $("#todo-title").val();
-  var todoTask = $("#todo-task").val();
-  var newToDo = new NewToDo(todoTitle, todoTask);
-  prepareTheCardInfo(newToDo);
-  toDoArray.push(newToDo);
-  sendToDosToStorage();
+  var smartgoalTitle = $("#smartgoal-title").val();
+  var smartgoalTask = $("#smartgoal-task").val();
+  var newGoal = new NewSmartGoal(smartgoalTitle, smartgoalTask);
+  prepareTheCardInfo(newGoal);
+  goalArray.push(newGoal);
+  sendGoalsToStorage();
 };
 
 
 function deleteCard() {
  var currentCardId = $(this).parent().parent()[0].id;
- toDoArray.forEach(function(card, index) {
+ goalArray.forEach(function(card, index) {
    if (currentCardId == card.id) {
-     toDoArray.splice(index, 1)
+     goalArray.splice(index, 1)
    }
  });
- sendToDosToStorage()
- $(this).closest('.to-do-card').remove();
+ sendGoalsToStorage()
+ $(this).closest('.smart-goal-card').remove();
 };
 
 
 function upImportance() {
-  var id = $(this).parent().parent('.to-do-card')[0].id;
+  // var id = $(this).parent().parent('.smart-goal-card')[0].id;
+    var id = $(this).closest('.smart-goal-card')[0].id;
   var importanceArray = ['none', 'low', 'normal', 'high', 'critical'];
-  toDoArray.forEach(function(card, i) {
+  goalArray.forEach(function(card, i) {
     if (card.id == id) {
       var currentIndex = importanceArray.indexOf(card.importance);
       currentIndex = (currentIndex != 4) ? currentIndex + 1 : currentIndex;
       card.importance = importanceArray[currentIndex];
-      $(event.target).siblings().find('span').text(card.importance);
+      $(event.target).parent().siblings().find('span').text(card.importance);
     }
   })
-  sendToDosToStorage();
+  sendGoalsToStorage();
 };
 
 
 function downImportance() {
-  var id = $(this).closest('.to-do-card')[0].id;
+  var id = $(this).closest('.smart-goal-card')[0].id;
   var importanceArray = ['none', 'low', 'normal','high','critical'];
-  toDoArray.forEach(function(card) {
+  goalArray.forEach(function(card) {
     if (card.id == id) {
       var currentIndex = importanceArray.indexOf(card.importance);
       currentIndex = (currentIndex !== 0) ? currentIndex - 1 : currentIndex;
       card.importance = importanceArray[currentIndex];
-      $(event.target).siblings().find('span').text(card.importance);
+      $(event.target).parent().siblings().find('span').text(card.importance);
     }
   })
-  sendToDosToStorage();
+  sendGoalsToStorage();
 };
 
 
@@ -179,47 +177,46 @@ function enterKeyBlur(e) {
 
 
 function editTitle(event) {
-  var id = $(this).closest('.to-do-card')[0].id;
+  var id = $(this).closest('.smart-goal-card')[0].id;
   var title = $(this).text();
   var isDate = $(this).text();
   if (isDate) {
     enterKeyBlur(event);
-    toDoArray.forEach(function(card) {
+    goalArray.forEach(function(card) {
       if (card.id == id) {
         card.title = title;
     }
   });
-  sendToDosToStorage();
+  sendGoalsToStorage();
 }
 };
 
 
 function editBody(event) {
-  var id = $(this).closest('.to-do-card')[0].id;
+  var id = $(this).closest('.smart-goal-card')[0].id;
   var body = $(this).text();
   enterKeyBlur(event);
-  toDoArray.forEach(function(card) {
+  goalArray.forEach(function(card) {
     if (card.id == id) {
       card.body = body;
     }
   });
-  sendToDosToStorage();
+  sendGoalsToStorage();
 };
 
 function editNotes(event) {
-  var id = $(this).closest('.to-do-card')[0].id;
+  var id = $(this).closest('.smart-goal-card')[0].id;
   var notes = $(this).text();
   enterKeyBlur(event);
-  toDoArray.forEach(function(card) {
+  goalArray.forEach(function(card) {
     if (card.id == id) {
       card.notes = notes;
     }
   });
-  sendToDosToStorage();
+  sendGoalsToStorage();
 };
 
 function dateEditCheck(key) {
-  // console.log(key);
   $("#date").on("keypress", function(key) {
     if (key.charCode < 45 || key.charCode > 57)
       return false;
@@ -227,21 +224,21 @@ function dateEditCheck(key) {
 }
 
 
-function sendToDosToStorage() {
-  localStorage.setItem("toDoArray", JSON.stringify(toDoArray));
-  console.log(toDoArray, "todoarray-setter");
+function sendGoalsToStorage() {
+  localStorage.setItem("goalArray", JSON.stringify(goalArray));
 };
 
 
 //clean this up to reflect a non-global array object !!! //
 
-function getToDoFromStorage() {
-  toDoArray = JSON.parse(localStorage.getItem("toDoArray")) || [];
-    return toDoArray;
+function getGoalFromStorage() {
+  goalArray = JSON.parse(localStorage.getItem("goalArray")) || [];
+    return goalArray;
 };
 
+
 function filterOutClassy() {
-  return toDoArray.filter(function(el) {
+  return goalArray.filter(function(el) {
     if (!el.classy) {
       return el;
     }
@@ -249,9 +246,9 @@ function filterOutClassy() {
 }
 
 
-function showAllToDos() {
-  $('todo-card-section').empty();
-  var fullArray = toDoArray;
+function showAllGoals() {
+  $('smartgoal-card-section').empty();
+  var fullArray = goalArray;
   prependAll(fullArray);
 }
 
@@ -264,8 +261,8 @@ function prependAll(ideaArray) {
 }
 
 function showCompleted(ideaArray) {
-  $('todo-card-section').empty();
-  var completedArray = toDoArray;
+  $('smartgoal-card-section').empty();
+  var completedArray = goalArray;
   completedArray.forEach(function(el){
     appendLastTenCards(el);
   });
@@ -273,7 +270,7 @@ function showCompleted(ideaArray) {
 
 
 function enableSave() {
-  if (($('#todo-title').val() !== "") || ($('#todo-task').val() !== '')) {
+  if (($('#smartgoal-title').val() !== "") || ($('#smartgoal-task').val() !== '')) {
     $('#save-btn').removeAttr('disabled');
   }
 };
@@ -286,11 +283,11 @@ function disableSave() {
 
 
 function evalInputsAlertIfEmpty() {
-  var todoTitle = $('#todo-title').val();
-  var todoTask = $('#todo-task').val();
-  if (!todoTitle) {
+  var smartgoalTitle = $('#smartgoal-title').val();
+  var smartgoalTask = $('#smartgoal-task').val();
+  if (!smartgoalTitle) {
     return alert('Please enter a task title.');
-  } else if (!todoTask) {
+  } else if (!smartgoalTask) {
     return alert ('Please enter a task.');
   } else {
     addCard();
@@ -300,18 +297,18 @@ function evalInputsAlertIfEmpty() {
 
 
 function resetInputs() {
-  $('#todo-title').val('');
-  $('#todo-task').val('');
+  $('#smartgoal-title').val('');
+  $('#smartgoal-task').val('');
 };
 
 
 function searchCards() {
   var search = $(this).val().toUpperCase();
-  var results = toDoArray.filter(function(elementCard) {
+  var results = goalArray.filter(function(elementCard) {
                 return elementCard.title.toString().toUpperCase().includes(search) ||
                 elementCard.body.toUpperCase().includes(search)
                 });
-  $('.todo-card-section').empty();
+  $('.smartgoal-card-section').empty();
   for (var i = 0; i < results.length; i++) {
     prepareTheCardInfo(results[i]);
   }
@@ -320,7 +317,7 @@ function searchCards() {
 
 function filter(event) {
   event.preventDefault()
-  var arrayFromStorage = getToDoFromStorage();
+  var arrayFromStorage = getGoalFromStorage();
   var importanceRating = $(event.target).text();
   var returnedFilterArray = arrayFromStorage.filter(function(element) {
                             return element.importance === importanceRating;
@@ -330,16 +327,16 @@ function filter(event) {
 
 
 function filterInOrOut(returnedFilterArray) {
-  $('.todo-card-section').empty();
-  returnedFilterArray.forEach(function(todo) {
-    prepareTheCardInfo(todo);
+  $('.smartgoal-card-section').empty();
+  returnedFilterArray.forEach(function(smartgoal) {
+    prepareTheCardInfo(smartgoal);
   })
 }
 
 
 function clearAndReplaceWithAll(e) {
   e.preventDefault();
-  $('.todo-card-section').empty();
+  $('.smartgoal-card-section').empty();
   prependAll();
 
 }
@@ -347,5 +344,5 @@ function clearAndReplaceWithAll(e) {
 
 function filterTasksWithoutCompletedClass(e) {
   e.preventDefault();
-  var storedArray = getToDoFromStorage();
+  var storedArray = getGoalFromStorage();
 }
